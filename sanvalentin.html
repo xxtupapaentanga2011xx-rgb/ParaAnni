@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Anni ❤️</title>
+<style>
+body{
+    margin:0;
+    text-align:center;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ff758c, #ffb199);
+    overflow:hidden;
+}
+
+/* tarjeta principal */
+.card{
+    background:white;
+    padding:25px;
+    margin:70px 20px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+    position:relative;
+    z-index:2;
+}
+
+h1{ color:#ff4d6d; }
+
+button{
+    font-size:18px;
+    padding:10px 20px;
+    margin:10px;
+    border:none;
+    border-radius:10px;
+}
+
+#si{ background:#ff4d6d; color:white; }
+#no{ background:gray; color:white; position:absolute; }
+
+/* corazones */
+.heart{
+    position: fixed;
+    top:-10px;
+    font-size:20px;
+    animation: fall linear forwards;
+    z-index:1;
+}
+
+@keyframes fall{
+    to{ transform: translateY(100vh); }
+}
+
+/* pantalla SI */
+#pantallaSi{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:#0b0b1a;
+    color:white;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:3;
+    padding:20px;
+}
+
+/* carta */
+#carta{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:#fff0f5;
+    z-index:4;
+    justify-content:center;
+    align-items:center;
+    padding:25px;
+    box-sizing:border-box;
+    animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn{
+    from{opacity:0;}
+    to{opacity:1;}
+}
+
+.contenido-carta{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 10px 20px rgba(0,0,0,0.2);
+}
+
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:2;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎵 Música de fondo (tu canción de Dropbox) -->
+<audio autoplay loop id="musica">
+  <source src="https://www.dropbox.com/scl/fi/gsekxwyb1q4ud7bly8q66/Te-quiero.m4a?rlkey=vj79z1z74uxim6h619w4qh5p1&raw=1" type="audio/m4a">
+</audio>
+
+<div class="card">
+    <h1>Oye, Anni ❤️</h1>
+    <p>Desde que empezamos a hablar me encanta el tiempo contigo.</p>
+    <p>No llevamos toda la vida, pero sí lo suficiente para querer invitarte a algo especial ✨</p>
+    <h2>¿Quieres ser mi San Valentín?</h2>
+
+    <button id="si" onclick="respuestaSi()">Sí 💖</button>
+    <button id="no" onmouseover="moverNo()">No 🙈</button>
+</div>
+
+<!-- pantalla cuando acepta -->
+<div id="pantallaSi">
+    <div style="font-size:24px; margin-bottom:20px;">
+        No llevo una vida contigo, pero quiero mejorar la tuya si me lo permites ❤️
+    </div>
+
+    <button onclick="verCarta()">Ver sorpresa ✨</button>
+</div>
+
+<!-- carta -->
+<div id="carta">
+    <div class="contenido-carta">
+        <h2>Para ti, Anni 💌</h2>
+        <p>
+        Gracias por darme la oportunidad de conocerte.
+        Me encantaría seguir creando momentos contigo,
+        reír más, hablar más y ver hasta dónde puede llegar esto.
+        </p>
+        <p>Feliz San Valentín ❤️</p>
+    </div>
+</div>
+
+<canvas id="fireworks"></canvas>
+
+<script>
+// Volumen bajo
+document.getElementById("musica").volume = 0.15;
+
+function respuestaSi(){
+    document.getElementById("pantallaSi").style.display = "flex";
+
+    // lluvia intensa de corazones
+    setInterval(()=>{
+        let heart = document.createElement("div");
+        heart.innerHTML = "💖";
+        heart.style.position = "fixed";
+        heart.style.left = Math.random()*100 + "vw";
+        heart.style.top = Math.random()*100 + "vh";
+        heart.style.fontSize = "24px";
+        document.body.appendChild(heart);
+        setTimeout(()=> heart.remove(), 2000);
+    }, 150);
+
+    iniciarFuegos();
+}
+
+function verCarta(){
+    document.getElementById("carta").style.display = "flex";
+}
+
+function moverNo(){
+    let x = Math.random() * (window.innerWidth - 80);
+    let y = Math.random() * (window.innerHeight - 40);
+    document.getElementById("no").style.left = x + "px";
+    document.getElementById("no").style.top = y + "px";
+}
+
+// Corazones suaves siempre
+setInterval(()=>{
+    let heart = document.createElement("div");
+    heart.innerHTML = "❤️";
+    heart.className = "heart";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
+    document.body.appendChild(heart);
+    setTimeout(()=> heart.remove(), 5000);
+}, 300);
+
+// Fuegos artificiales
+function iniciarFuegos(){
+    const canvas = document.getElementById("fireworks");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    function fuego(){
+        let x = Math.random() * canvas.width;
+        let y = Math.random() * canvas.height/2;
+
+        for(let i=0;i<30;i++){
+            ctx.beginPath();
+            ctx.arc(x, y, 2, 0, Math.PI*2);
+            ctx.fillStyle = "hsl(" + Math.random()*360 + ",100%,50%)";
+            ctx.fill();
+        }
+    }
+    setInterval(fuego, 400);
+}
+</script>
+
+</body<!-- 🎵 Música de fondo -->
+<audio autoplay loop id="musica">
+  <source src="Te-quiero.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  // Volumen suave para que no tape la página
+  document.getElementById("musica").volume = 0.15;
+</script>>
+</html>
